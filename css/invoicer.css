@@ -1,0 +1,267 @@
+@import url(https://fonts.googleapis.com/css?family=Lato:400,700,300);
+@import url(https://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic);
+@import url(https://fonts.googleapis.com/css?family=Raleway:400,300,500,600,700);
+
+#content {
+  font-size:          12pt;
+  font-family:        'Raleway', 'Helvetica', 'Arial', sans-serif;
+  width:              800px;
+  min-width:          800px;
+  margin:             0 auto;
+  border:             1px solid #aaa;
+}
+
+h1, h2, h3, h4, h5 {
+  font-family:        'Merriweather', 'Times New Roman', serif;
+  font-weight:        300;
+}
+
+h1 {
+  margin:             0;
+  font-size:          6em;
+}
+
+.invoiceIdentity {
+  display:            inline-block;
+  width:              60%;
+  margin-left:        2em;
+  margin-right:       2px;
+}
+
+.paymentInfo {
+  display:            inline-block;
+  width:              40%;
+  margin-right:       20%;
+  margin-left:        2em;
+  height:             150%;
+}
+
+.paymentInfo:hover {
+  /*margin-right:       19.7%;*/
+}
+
+.invoiceIdentity h1 {
+  letter-spacing:     -7px;
+}
+
+.invoiceMeta, .clientInfo {
+  display:            inline-block;
+  width:              33%;
+}
+
+.paymentInfo, .clientInfo {
+  margin-top:         5em;
+  vertical-align:     top;
+}
+
+.invDropDown {
+  display:            inline;
+  border:             0;
+  background:         none;
+  float:              right;
+  -webkit-appearance: none;
+  -moz-appearance:    none;
+  text-indent:        1px;
+  text-overflow:      '';
+  margin-right:       0.3em;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+label {
+  display:            inline-block;
+  width:              100%;
+}
+
+label input {
+  float:              right;
+  font-size:          0.9em;
+  font-weight:        300;
+  width:              8em;
+}
+
+input {
+  display:            block;
+  border:             0;
+  width:              20em;
+}
+
+input:hover, input:focus{
+  background:         #ccc;
+}
+
+#billto {
+  display:            inline-block;
+}
+
+.payeeContact {
+  width:              48%;
+}
+
+.payeeContact input {
+  float:              right;
+  text-align:         -webkit-right;
+  text-align:         right;
+  margin-right:       1%;
+}
+
+.pmLine input {
+  display:            inline;
+}
+
+.thankyouNote {
+  width:              48%;
+  margin-left:        1%;
+}
+
+.thankyouNote div {
+  font-size:          0.8em;
+}
+
+.businessName {
+  font-size:          2em;
+  font-weight:        700;
+  width:              8em;
+  color:              orange;
+}
+
+.lineItems {
+  border-top:         1px solid #aaa;
+  padding:            5px 0;
+  margin:             3em auto;
+  width:              94%;
+}
+
+.item {
+  width:              63%;
+  margin-right:       0.9em;
+}
+.rate {
+  width:              10%;
+  text-align:         right;
+}
+.qty {
+  width:              8%;
+  margin-right:       0.9em;
+  text-align:         right;
+}
+.total {
+  display:            inline-block;
+  width:              10%;
+  text-align:         right;
+}
+
+
+.numeric {
+  font-family:        'American Typewriter', 'Courier New', serif;
+  font-size:          0.9em;
+  text-align:         right;
+}
+
+.lineItem input, .totals input {
+  padding-top:        1em;
+  display:            inline-block;
+  font-size:          0.9em;
+}
+
+.totals input {
+  width:              10%;
+  padding:            0;
+}
+
+.heading {
+  font-family:        'Merriweather', 'Times New Roman', serif;
+  font-weight:        400;
+  display:            inline-block;
+}
+
+
+.footer {
+  border-top:         1px solid #aaa;
+  padding:            3em 0;
+  margin:             3em auto 0;
+  width:              94%;
+  display:            -webkit-box;
+  display:            -moz-box;
+  display:            -ms-flexbox;
+  display:            -webkit-flex;
+  display:            flex;
+}
+
+.currency {
+  display:            none;
+  margin-left:        -0.7em;
+  font-family:        'American Typewriter', 'Courier New', serif;
+}
+
+.editGroup:hover {
+  border:             1px dashed #999;
+  margin-bottom:      -2px;
+	-ms-transform:      translate(-1px,-1px);
+	-webkit-transform:  translate(-1px,-1px);
+	transform:          translate(-1px,-1px);
+}
+
+.editGroup input:hover, .editGroup input:focus {
+  background:         #ccc;
+}
+
+.lineItems .editGroup:hover {
+  margin-right:       -2px;
+}
+
+.delRow {
+  color:              red;
+  display:            inline-block;
+  padding-left:       0.5em;
+}
+.delRow:hover {
+  cursor:             pointer;
+}
+
+.totals {
+  font-family:        'Merriweather', 'Times New Roman', serif;
+  border-top:         2px solid black;
+  padding-top:        50px;
+  margin:             4px 0;
+}
+
+.totalLabel {
+  display:            inline-block;
+  width:              80%;
+  text-align:         right;
+}
+
+.finalTotal {
+  font-weight:        bold;
+}
+
+.totalValue {
+  display:            inline-block;
+  font-size:          1em;
+  width:              7.25em;
+}
+
+input.tax {
+  margin-left:        2.3em;
+  font-size:          1em;
+  width:              5em;
+}
+
+.tax:hover {
+  background:         #ccc;
+}
+
+.totalValue::before {
+  content:            "$";
+}
+
+.totals .currency {
+  font-family:        'American Typewriter', 'Courier New', serif;
+  width:              4.8%;
+  text-align:         right;
+  display:            inline-block;
+  margin:             0;
+}

@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Invoicer - Get Paid With React</title>
+  </head>
+  <body>
+
+    <div id="content">
+    </div>
+
+    <link rel="stylesheet" href="css/invoicer.css">
+
+    <script src="lib/react-with-addons.js"></script>
+    <script src="lib/react-dom.js"></script>
+    <script src="lib/browser.js"></script>
+
+    <script type="text/babel" >
+
+      var InvoiceIdentity = React.createClass({
+        render: function(){
+          return (
+            <div className="invoiceIdentity">
+              <h1>Invoice</h1>
+            </div>
+          );
+        }
+      });
+
+      var InvoiceMeta = React.createClass({
+        mixins: [React.addons.LinkedStateMixin],
+
+        getInitialState: function(){
+          return{
+            bizName: "Business Name",
+          };
+        },
+
+        render: function(){
+          return(
+            <div className="invoiceMeta">
+              <input type="text" className="businessName" valueLink={this.linkState('bizName')} />
+              <label>Issue Date: <input type="text" placeholder="DD.MM.YYYY" /></label>
+              <label>Due Date: <input type="text" placeholder="DD.MM.YYYY" /></label>
+              <label>Invoice #: <input type="text" placeholder="YYYY-nnnn" /></label>
+              <label>P.O. #: <input type="text" placeholder="#nnnnnnnnn" /></label>
+            </div>
+          );
+        },
+      });
+
+      var PaymentInfo = React.createClass({
+        render: function(){
+          return (
+            <div className="paymentInfo">
+              <div><strong>Payment:</strong></div>
+              <input type="text" placeholder="Add payment method" />
+            </div>
+          );
+        },
+      });
+
+      var ClientInfo = React.createClass({
+
+        render: function(){
+          return (
+            <div className="clientInfo">
+              <div id="billTo"><strong>Bill To:</strong></div>
+              <input type="text" id="companyName" placeholder="Client/Company Name" />
+              <input type="text" id="address1" placeholder="Address 1" />
+              <input type="text" id="address2" placeholder="Address 2" />
+              <input type="text" id="phone" placeholder="555-5555-5555" />
+              <input type="text" id="email" placeholder="client@example.com" />
+              <input type="text" id="attn" placeholder="attn:Purchasing Officer" />
+            </div>
+          );
+        },
+
+      });
+
+      var LineItems = React.createClass({
+
+        getInitialState: function(){
+          return {
+            showNew: false,
+            lineItems: [
+                        {item: null, rate: 0, qty: 0},
+                      ],
+          };
+        },
+
+        updateLineItem: function(idx, field, value){
+          var liCopy = this.state.lineItems.slice();
+          liCopy[idx][field] = value;
+
+          if( idx == this.state.lineItems.length-1 ){
+            liCopy.push([{item: null, rate:0, qty:0}]);
+          }
+
+          this.setState({lineItems: liCopy});
+        },
+
+        deleteLineItem: function(idx){
+
+          var finalLi;
+          if( this.state.lineItems.length == 1 ){
+            finalLi = [];
+            finalLi[0] = {item: null, rate: 0, qty: 0};
+          } else {
+            var liCopyPre = this.state.lineItems.slice(0, idx);
+            var liCopyPost = this.state.lineItems.slice(idx+1);
+            finalLi = liCopyPre.concat(liCopyPost);
+          }
+
+          this.setState({lineItems: finalLi});
+        },
+
+        showNew: function(){
+          this.setState({showNew: true});
+        },
+
+        hideNew: function(e){
+          var ele = e.toElement || e.relatedTarget;
+          if( !ele || ele.className.indexOf('liData') >= 0 ){
+            return;
+          }
+
+          this.setState({showNew: false});
+        },
+
+        render: function(){
+          return (
+            <div className="lineItems"
+                 onMouseOver={this.showNew}
+                 onMouseOut={this.hideNew} >
+              <span className="item heading">Item</span>
+              <span className="rate heading">Rate($)</span>
+              <span className="qty heading">Qty</span>
+              <span className="total heading">Total($)</span>
+              {
+                this.state.lineItems.map((function(lineItem, idx){
+                  var maxIdx = this.state.lineItems.length-1;
+
+                  if( idx < maxIdx ) {
+                    return <LineItem key={idx} idx={idx} item={lineItem['item']}
+                            rate={lineItem['rate']} qty={lineItem['qty']}
+                            updateFn={this.updateLineItem}
+                            delFn={this.deleteLineItem} />
+                  }
+
+                  if( maxIdx == 0 || (idx == maxIdx && this.state.showNew) ){
+                    return <LineItem key={idx} idx={idx}
+                            updateFn={this.updateLineItem} 
+                            delFn={this.deleteLineItem} />
+                  }
+
+                }).bind(this))
+              }
+              <Totals lineItems={this.state.lineItems} />
+            </div>
+          );
+        },
+
+      });
+
+      var LineItem = React.createClass({
+
+        getDefaultProps: function(){
+          return {
+            item: null,
+            rate: null,
+            qty: null,
+            total: null,
+          };
+        },
+
+        propTypes: {
+          item: React.PropTypes.string,
+          rate: React.PropTypes.number,
+          qty: React.PropTypes.number,
+          total: React.PropTypes.number,
+        },
+
+        getInitialState: function(){
+          return {
+            showX: false,
+          };
+        },
+
+        handleItemChange: function(e){
+          this.props.updateFn(this.props.idx, 'item', e.target.value);
+        },
+
+        handleRateChange: function(e){
+          this.props.updateFn(this.props.idx, 'rate', parseFloat(e.target.value));
+        },
+
+        handleQtyChange: function(e){
+          this.props.updateFn(this.props.idx, 'qty', parseFloat(e.target.value));
+        },
+
+        deleteRow: function(){
+          this.props.delFn(this.props.idx);
+        },
+
+        showX: function(){
+          this.setState({showX: true});
+        },
+
+        hideX: function(e){
+          var ele = e.toTarget || e.relatedTarget;
+          if( !ele || ele.className.indexOf('delRow') >= 0 ) {
+            return;
+          }
+
+          this.setState({showX: false});
+        },
+
+        render: function(){
+          return (
+            <div className="lineItem" 
+                 onMouseOver={this.showX}
+                 onMouseOut={this.hideX} >
+              <input type="text" className="liData item" placeholder="New item" value={this.props.item} onChange={this.handleItemChange} />
+              <input type="text" className="liData rate" placeholder="0.00" value={this.props.rate} onChange={this.handleRateChange} />
+              <input type="text" className="liData qty" placeholder="0.0" value={this.props.qty} onChange={this.handleQtyChange} />
+              <span className="liData total" >{this.props.qty * this.props.rate}</span>
+
+              {
+                this.state.showX ? <div className="delRow" onClick={this.deleteRow} >X</div>
+                                 : null
+              }
+            </div>
+          );
+        },
+      });
+
+      var Totals = React.createClass({
+        mixins: [React.addons.LinkedStateMixin],
+
+        getDefaultProps: function(){
+          return {
+            lineItems: [],
+          };
+        },
+
+        getInitialState: function(){
+          return {
+            tax: 0,
+          };
+        },
+
+        calcSubTotal: function(){
+          var lsub = 0;
+          this.props.lineItems.map((function(li, idx){
+            lsub += ( this.zeroDef(li['rate']) * this.zeroDef(li['qty']) );
+          }).bind(this));
+
+          return lsub;
+        },
+
+        zeroDef: function(val){
+          if( !val || isNaN(val) ){ return 0 }
+          return val;
+        },
+
+        render: function(){
+          return (
+            <div className="totals">
+              <div className="totalLabel">Sub-total:</div>
+              <span className="subtotal totalValue numeric">{this.calcSubTotal()}</span>
+
+              <div className="totalLabel">Tax:</div>
+              <input className="tax numeric" type="text" placeholder="0.0" valueLink={this.linkState('tax')}/>
+              <span>%</span>
+
+              <div className="totalLabel finalTotal">Total:</div>
+              <span className="totalValue finalTotal numeric">{
+                parseFloat(this.calcSubTotal() + (this.calcSubTotal() * (this.state.tax / 100) )) }</span>
+            </div>
+          );
+        },
+      });
+
+      var PayeeContact = React.createClass({
+        render: function(){
+          return (
+            <div className="payeeContact">
+              <input type="text" placeholder="Address 1" />
+              <input type="text" placeholder="Address 2" />
+              <input type="text" placeholder="+5 (5)5 5555 5555" />
+              <input type="text" placeholder="www.example.com" />
+              <input type="text" placeholder="freelancer@example.com" />
+            </div>
+          );
+        },
+      });
+
+      var ThankyouNote = React.createClass({
+        render: function(){
+          return (
+            <div className="thankyouNote">
+              Thankyou!
+              <div>We appreciate your business and it's</div>
+              <div>been a pleasure working with you.</div>
+            </div>
+          );
+        },
+      });
+
+      var Footer = React.createClass({
+        render: function(){
+          return (
+            <div className="footer">
+              <PayeeContact />
+              <ThankyouNote />
+            </div>
+          );
+        },
+      });
+
+      var Invoice = React.createClass({
+        render: function(){
+          return (
+            <div className="invoice">
+              <InvoiceIdentity />
+              <InvoiceMeta />
+              <PaymentInfo />
+              <ClientInfo />
+              <LineItems />
+              <Footer />
+            </div>
+          );
+        },
+      });
+
+      ReactDOM.render(
+        <Invoice />,
+        document.getElementById('content')
+      );
+
+    </script>
+
+  </body>
+</html>
