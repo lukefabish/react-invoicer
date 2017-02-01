@@ -1,0 +1,40 @@
+{
+  "name": "react-invoicer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lukefabish/react-invoicer.git"
+  },
+  "author": "Luke Fabish",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lukefabish/react-invoicer/issues"
+  },
+  "homepage": "https://github.com/lukefabish/react-invoicer#readme",
+  "devDependencies": {
+    "babel-core": "^6.22.1",
+    "babel-loader": "^6.2.10",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.22.0",
+    "eslint": "^3.14.1",
+    "eslint-config-airbnb": "^14.0.0",
+    "eslint-import-resolver-webpack": "^0.8.1",
+    "eslint-loader": "^1.6.1",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^3.0.2",
+    "eslint-plugin-react": "^6.9.0",
+    "file-loader": "^0.9.0",
+    "webpack": "^1.14.0",
+    "webpack-dev-server": "^1.16.2"
+  },
+  "dependencies": {
+    "react": "^15.4.2",
+    "react-addons-linked-state-mixin": "^15.4.2",
+    "react-dom": "^15.4.2"
+  }
+}
