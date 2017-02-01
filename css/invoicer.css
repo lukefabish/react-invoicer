@@ -215,8 +215,11 @@ input:hover, input:focus{
 .delRow {
   color:              red;
   display:            inline-block;
-  padding-left:       0.5em;
+  margin-left:        0.5em;
+  border:             0;
+  background-color:   #eee;
 }
+
 .delRow:hover {
   cursor:             pointer;
 }
