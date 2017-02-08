@@ -1,15 +1,24 @@
 import React from 'react';
 import LineItem from './LineItem';
 import Totals from './Totals';
+import { InvoicerStore, InvoicerFields } from '../InvoicerStore';
 
 export default class LineItems extends React.Component {
 
+  static get emptyLineItem() {
+    return { item: '', rate: 0, qty: 0 };
+  }
+  static get defaultState() {
+    return {
+      showNew: false,
+      lineItems: [LineItems.emptyLineItem],
+    };
+  }
+
   constructor(props) {
     super(props);
-    this.state = {
-      showNew: false,
-      lineItems: [{ item: '', rate: 0, qty: 0 }],
-    };
+    this.state = InvoicerStore.getValue(InvoicerFields.LINE_ITEMS,
+                  LineItems.defaultState);
 
     this.showNew = this.showNew.bind(this);
     this.hideNew = this.hideNew.bind(this);
@@ -18,12 +27,16 @@ export default class LineItems extends React.Component {
     this.emitLineItem = this.emitLineItem.bind(this);
   }
 
+  componentWillUpdate(nextProps, nextState) {
+    InvoicerStore.setValue(InvoicerFields.LINE_ITEMS, nextState);
+  }
+
   updateLineItem(idx, field, value) {
     const liCopy = this.state.lineItems.slice();
     liCopy[idx][field] = value;
 
     if (idx === this.state.lineItems.length - 1) {
-      liCopy.push([{ item: '', rate: 0, qty: 0 }]);
+      liCopy.push(LineItems.emptyLineItem);
     }
 
     this.setState({ lineItems: liCopy });
@@ -33,7 +46,7 @@ export default class LineItems extends React.Component {
     let finalLi;
     if (this.state.lineItems.length === 1) {
       finalLi = [];
-      finalLi[0] = { item: '', rate: 0, qty: 0 };
+      finalLi[0] = LineItems.emptyLineItem;
     } else {
       const liCopyPre = this.state.lineItems.slice(0, idx);
       const liCopyPost = this.state.lineItems.slice(idx + 1);

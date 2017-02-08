@@ -54,18 +54,6 @@ h1 {
   vertical-align:     top;
 }
 
-.invDropDown {
-  display:            inline;
-  border:             0;
-  background:         none;
-  float:              right;
-  -webkit-appearance: none;
-  -moz-appearance:    none;
-  text-indent:        1px;
-  text-overflow:      '';
-  margin-right:       0.3em;
-}
-
 select::-ms-expand {
   display: none;
 }
@@ -73,6 +61,7 @@ select::-ms-expand {
 label {
   display:            inline-block;
   width:              100%;
+  padding-top:        0.3em;
 }
 
 label input {

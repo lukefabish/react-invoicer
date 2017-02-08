@@ -3,7 +3,6 @@ module.exports = {
 
   entry: {
     javascript: "./js/invoicer.jsx",
-    html: "./invoicer.html",
   },
 
   output: {
@@ -12,28 +11,22 @@ module.exports = {
   },
 
   resolve: {
-    extensions: ["", ".js", ".jsx", ".json"]
+    extensions: ["*", ".js", ".jsx", ".json"]
   },
 
   module: {
-    preLoaders: [
-      // Javascript
-      { test: /\.jsx?$/, loader: 'eslint', exclude: /node_modules/ }
-    ],
-    loaders: [
+    rules: [
+      {
+        test: /\.jsx?$/,
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        exclude: /node_modules/
+      },
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loaders: ["babel-loader"]
-      },
-      {
-        test: /\.html$/,
-        loader: "file?name=[name].[ext]",
-      },
+        use: ["babel-loader"]
+      }
     ]
-  },
-  eslint: {
-    failOnWarning: false,
-    failOnError: false
   },
 };
